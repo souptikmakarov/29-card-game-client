@@ -1,0 +1,24 @@
+<nav class="navbar navbar-dark bg-dark">
+    <span class="navbar-text ml-auto">
+        {{ player_name }}
+    </span>
+</nav>
+<div *ngIf="!partOfRoom">
+    <div class="form-group-inline">
+        <input type="text" class="form-control" [(ngModel)]="roomName">
+        <br>
+        <button type="button" class="btn btn-primary" (click)="createRoom()">Create</button>
+    </div>
+    <br>
+    <h5>Rooms available</h5>
+    <ul *ngFor="let room of availableRooms">
+        <li (click)="joinRoom(room)">{{ room.roomName }}</li>
+    </ul>
+</div>
+
+<div *ngIf="partOfRoom">
+    <h3>Players in {{ roomName }}</h3>
+    <ul *ngFor="let player of playersInRoom">
+        <li>{{ player }}</li>
+    </ul>
+</div>

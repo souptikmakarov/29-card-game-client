@@ -1,0 +1,129 @@
+.game-info{
+    width: 100%;
+    border: 1px solid;
+    padding: 1px;
+    box-shadow: 1px 2px #888888;
+    font-size: 12pt;
+    max-height: 10vh;
+}
+
+.bid-info{
+    text-align: center;
+}
+
+.score-table{
+    max-height: inherit;
+}
+
+.score-table > tr{
+    padding: 2px;
+}
+
+.score-table > tr > td{
+    padding: 0px 2vw;
+}
+
+.bidder{
+    font-size: 12pt;
+}
+
+.bid-value{
+    font-weight: bold;
+    font-size: 16pt;
+}
+
+.trump-card{
+    max-height: 9vh;
+}
+
+.game-table{
+    max-height: 60vh;
+    height: 60vh;
+}
+
+.player-position{
+    text-align: center;
+    position: relative;
+}
+
+.postion-1{
+    top: 55%;
+}
+
+.postion-2{
+    top: 45%;
+}
+
+.postion-3{
+    top: 5%;
+}
+
+.postion-4{
+    top: 45%;
+}
+
+.player-avatar{
+    max-height: 8vh;
+    max-width: 8vh;
+}
+
+.player-bid{
+    border: 1px solid;
+    padding: 2px;
+    box-shadow: 1px 2px #888888;
+    font-size: 10pt;
+    border-radius: 30%;
+}
+
+.player-name{
+    font-weight: bold;
+    font-size: 16pt;
+    margin: 0;
+}
+
+.hand-display{
+    width: 100%;
+    max-height: 10vh;
+    position: relative;
+    top: 10vh;
+    text-align: center;
+}
+
+.hand-card{
+    display: inline-block;
+    max-height: 10vh;
+    margin-left: 2vw;
+}
+
+.bidding-section{
+    width: 100%;
+    font-size: 12pt;
+    max-height: 20vh;
+    position: relative;
+    top: 10vh;
+    text-align: center;
+}
+
+.bidding-buttons{
+    height: 8vh;
+    width: 8vh;
+    border-radius: 100%;
+    background-color: cornflowerblue;
+    box-shadow: 1px 3px #888;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    line-height: 8vh;
+    font-size: 14pt;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.bidding-buttons:active{
+    box-shadow: 1px 1px #666;
+    transform: translateY(2px);
+}

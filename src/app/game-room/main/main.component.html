@@ -1,0 +1,58 @@
+<div class="game-info">
+    <div class="row">
+        <div class="col-5">
+            <table class="score-table">
+                <tr>
+                    <td>Your Pair</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>Opp Pair</td>
+                    <td>0</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-5 bid-info">
+            <span class="bidder">Bidder: ----</span><br>
+            <span class="bid-value">16</span>
+        </div>
+        <div class="col-2">
+            <img src="../../../assets/card-images/card_back.jpg" class="trump-card mx-auto d-block">
+        </div>
+    </div>
+</div>
+<div class="row game-table">
+    <div class="col-4">
+        <div class="player-position postion-4">
+            <img src="../../../assets/player-avatars/player4.jpg" class="player-avatar">
+            <span class="player-bid ml-1" *ngIf="canShowPlayerBid(game_data.pair_2[1])">{{ getPlayerLastBid(game_data.pair_2[1]) }}</span>
+            <p class="player-name">{{ game_data.pair_2[1] }}</p>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="player-position postion-3">
+            <img src="../../../assets/player-avatars/player3.jpg" class="player-avatar">
+            <p class="player-name">{{ game_data.pair_1[1] }}</p>
+            <span class="player-bid" *ngIf="canShowPlayerBid(game_data.pair_1[1])">{{ getPlayerLastBid(game_data.pair_1[1]) }}</span>
+        </div>
+        <div class="player-position postion-1">
+            <img src="../../../assets/player-avatars/player1.jpg" class="player-avatar">
+            <p class="player-name">{{ game_data.pair_1[0] }}</p>
+            <span class="player-bid" *ngIf="canShowPlayerBid(game_data.pair_1[0])">{{ getPlayerLastBid(game_data.pair_1[0]) }}</span>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="player-position postion-2">
+            <span class="player-bid mr-1" *ngIf="canShowPlayerBid(game_data.pair_2[0])">{{ getPlayerLastBid(game_data.pair_2[0]) }}</span>
+            <img src="../../../assets/player-avatars/player2.jpg" class="player-avatar">
+            <p class="player-name">{{ game_data.pair_2[0] }}</p>
+        </div>
+    </div>
+</div>
+<div class="hand-display">
+    <img [src]="card.getImage()" [alt]="card.suit+card.rank" *ngFor="let card of game_data.card_in_hand" class="hand-card">
+</div>
+<div class="bidding-section mt-2" *ngIf="amIBidding">
+    <div class="bidding-buttons" (click)="makeBid()">{{ bid_number }}</div>
+    <div class="bidding-buttons ml-1 ml-md-3"(click)="passBid()">Pass</div>
+</div>
