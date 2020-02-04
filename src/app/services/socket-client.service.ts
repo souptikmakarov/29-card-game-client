@@ -59,17 +59,24 @@ export class SocketClientService {
 				data: data
 			});
 		});
-	}  
 
-	sendMessage(msg: string){
-		this.socket.emit("changeMessageForRoom", msg);
+		this.socket.fromEvent("bidding_update").subscribe(data => {
+			this.gameEvents.emit({
+				msgType: "bidding_update",
+				data: data
+			});
+		});
 	}
 
 	createRoom(roomName: string, playerId: string){
-		this.socket.emit("createRoom", { roomName, playerId });
+		this.socket.emit("create_room", { roomName, playerId });
 	}
 
 	joinRoom(roomId: string, playerId: string){
-		this.socket.emit("joinRoom", { roomId, playerId });
+		this.socket.emit("join_room", { roomId, playerId });
+	}
+
+	makeBid(bid: number, roomId: string){
+		this.socket.emit("player_bid", { bid, roomId });
 	}
 }

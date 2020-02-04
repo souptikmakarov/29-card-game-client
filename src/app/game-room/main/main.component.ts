@@ -15,7 +15,7 @@ export class MainComponent implements OnInit {
 	game_data: GameData;
 	my_player_id: string;
 	subscription: Subscription;
-	amIBidding: boolean = true;
+	amIBidding: boolean = false;
 	playerBids = {};
 
 	constructor(
@@ -25,6 +25,23 @@ export class MainComponent implements OnInit {
 
 	ngOnInit() {
 		this.bid_number = 16;
+				
+		this.playerBids[this.game_data.pair_1[0]] = {
+			showPlayerBid: false,
+			playerLastBid: 16
+		};
+		this.playerBids[this.game_data.pair_2[0]] = {
+			showPlayerBid: false,
+			playerLastBid: 16
+		};
+		this.playerBids[this.game_data.pair_1[1]] = {
+			showPlayerBid: false,
+			playerLastBid: 16
+		};
+		this.playerBids[this.game_data.pair_2[1]] = {
+			showPlayerBid: false,
+			playerLastBid: 16
+		};
 
 		this.subscription = this.playerDataService.getPlayerInfo().subscribe(data => {
 			this.my_player_id = data.playerId;
@@ -34,55 +51,43 @@ export class MainComponent implements OnInit {
 			this.game_data = game_data;
 		});
 
-		setTimeout(() => {
-			let cards = [
-				new Card("C", "J"),
-				new Card("C", "9"),
-				new Card("C", "10"),
-				new Card("S", "Q"),
-			];
-			this.game_data = new GameData();
-			this.game_data.card_in_hand = cards;
-			this.game_data.pair_1 = ["You", "North"];
-			this.game_data.pair_2 = ["East", "West"];
-			this.playerBids[this.game_data.pair_1[0]] = {
-				showPlayerBid: true,
-				playerLastBid: 16
-			};
-			this.playerBids[this.game_data.pair_2[0]] = {
-				showPlayerBid: true,
-				playerLastBid: 16
-			};
-			this.playerBids[this.game_data.pair_1[1]] = {
-				showPlayerBid: true,
-				playerLastBid: 16
-			};
-			this.playerBids[this.game_data.pair_2[1]] = {
-				showPlayerBid: true,
-				playerLastBid: 16
-			};
-		}, 2000);
-
 		this.messageClient.gameEvents.subscribe(data => {
 			if (data.msgType == "player_card"){
 				if (data.data.forPlayer == this.my_player_id){
 					for (var card of data.data.cards){
 						console.log(card);
+						this.game_data.card_in_hand.push(new Card(card._suit, card._rank));
 					}
 				}
+				this.gameDataService.setGameData(this.game_data);
 			}
 			else if(data.msgType == "bidding_raise"){
-
+				if (data.data.forPlayer == this.my_player_id){
+					this.bid_number = data.data.raiseTo;
+					this.amIBidding = true;
+				}
+			}
+			else if(data.msgType == "bidding_update"){
+				if (data.data.bidder != this.my_player_id){
+					this.playerBids[data.data.bidder].showPlayerBid = true;
+					this.playerBids[data.data.bidder].playerLastBid = data.data.bid;
+				}
 			}
 		});
 	}
 
 	makeBid(){
-
+		this.playerBids[this.my_player_id].showPlayerBid = true;
+		this.playerBids[this.my_player_id].playerLastBid = this.bid_number;
+		this.messageClient.makeBid(this.bid_number, this.game_data.roomId);
+		this.amIBidding = false;
 	}
 
 	passBid(){
-
+		this.playerBids[this.my_player_id].showPlayerBid = true;
+		this.playerBids[this.my_player_id].playerLastBid = "Pass";
+		this.messageClient.makeBid(0, this.game_data.roomId);
+		this.amIBidding = false;
 	}
 
 	canShowPlayerBid(playerName){
