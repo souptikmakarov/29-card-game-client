@@ -13,7 +13,7 @@ export class GameDataService {
 
 	gameData = new BehaviorSubject<GameData>(new GameData());
 	private apiUrl: string = environment.apiUrl;
-	private p_names: string[];
+	private p_names: string[] = [];
 	private p_list: string[];
   
 	setGameData(info: GameData){
@@ -24,7 +24,7 @@ export class GameDataService {
 	  	return this.gameData.asObservable();
 	}
 
-	initGameWithPlayers(playerList: string[], roomId: string){
+	initGameWithPlayers(playerList: string[], roomId: string, callback: Function){
 		let gd = new GameData();
 		gd.roomId = roomId;
 		gd.pair_1 = [playerList[0], playerList[1]];
@@ -33,6 +33,7 @@ export class GameDataService {
 
 		this.p_list = playerList;
 		this.getAndPopulatePlayerNames(this.p_list.shift());
+		callback();
 	}
 
 	getAndPopulatePlayerNames(player: string){
@@ -46,8 +47,8 @@ export class GameDataService {
 						this.getAndPopulatePlayerNames(this.p_list.shift());
 					else{
 						this.getGameData().pipe(take(1)).subscribe((data: GameData) => {
-							data.pair_1_names = [this.p_list[0], this.p_list[1]];
-							data.pair_2_names = [this.p_list[2], this.p_list[3]];
+							data.pair_1_names = [this.p_names[0], this.p_names[1]];
+							data.pair_2_names = [this.p_names[2], this.p_names[3]];
 							this.setGameData(data);
 						});
 					}
@@ -72,7 +73,7 @@ export class GameData {
 	pair_2: string[] = ["",""];
 	pair_1_names: string[] = ["",""];
 	pair_2_names: string[] = ["",""];
-	card_in_hand: Card[];
+	card_in_hand: Card[] = [];
 }
 
 export class Card{

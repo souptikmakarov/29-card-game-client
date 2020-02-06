@@ -38,8 +38,8 @@ export class RoomsComponent implements OnInit, OnDestroy {
 			}
 			else if (data.msgType == "room_created") {
 				this.roomId = data.data.roomId;
-				// if (!this.availableRooms.includes(data.data))
-				// 	this.availableRooms.push(data.data);
+				if (!this.availableRooms.includes(data.data))
+					this.availableRooms.push(data.data);
 			}
 			else if (data.msgType == "join_room_failed") {
 				alert(data.data);
@@ -50,9 +50,9 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
 		this.messageClient.gameEvents.subscribe(data => {
 			if (data.msgType == "game_start"){
-				this.gameDataService.initGameWithPlayers(this.playersInRoom, this.roomId);
-				this.router.navigate(['game-table']);
-
+				this.gameDataService.initGameWithPlayers(this.playersInRoom, this.roomId, () => {
+					this.router.navigate(['main', 'game-table']);
+				});
 			}
 		});
 

@@ -1,5 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
+import { PlayerDataService, PlayerInfo } from './player-data.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -10,7 +11,14 @@ export class SocketClientService {
 
 	roomEvents = new EventEmitter<any>();
 
-	constructor(private socket: Socket) {
+	constructor(private socket: Socket, private playerService: PlayerDataService) {
+
+		this.socket.on('connect', () => {
+			playerService.getPlayerInfo().subscribe((data: PlayerInfo) =>{
+				if(data.playerId)
+					socket.emit("player_reconnect", data.playerId);
+			});
+		});
 
 		this.socket.fromEvent("players_in_room").subscribe(data => {
 			this.roomEvents.emit({

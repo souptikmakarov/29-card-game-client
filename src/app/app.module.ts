@@ -14,7 +14,7 @@ import { GameRoomComponent } from './game-room/game-room.component';
 const config: SocketIoConfig = { url: 'http://localhost:3000/', options: {} };
 
 const appRoutes: Routes = [
-  { path: '', component: MainComponent },
+  { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'main', 
     component: GameRoomComponent, 
@@ -22,7 +22,8 @@ const appRoutes: Routes = [
       {
         path: '',
         component: RoomsComponent
-      },{
+      },
+      {
         path: 'rooms',
         component: RoomsComponent
       },

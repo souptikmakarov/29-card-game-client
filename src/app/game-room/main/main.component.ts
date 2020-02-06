@@ -25,23 +25,6 @@ export class MainComponent implements OnInit {
 
 	ngOnInit() {
 		this.bid_number = 16;
-				
-		this.playerBids[this.game_data.pair_1[0]] = {
-			showPlayerBid: false,
-			playerLastBid: 16
-		};
-		this.playerBids[this.game_data.pair_2[0]] = {
-			showPlayerBid: false,
-			playerLastBid: 16
-		};
-		this.playerBids[this.game_data.pair_1[1]] = {
-			showPlayerBid: false,
-			playerLastBid: 16
-		};
-		this.playerBids[this.game_data.pair_2[1]] = {
-			showPlayerBid: false,
-			playerLastBid: 16
-		};
 
 		this.subscription = this.playerDataService.getPlayerInfo().subscribe(data => {
 			this.my_player_id = data.playerId;
@@ -49,17 +32,39 @@ export class MainComponent implements OnInit {
 
 		this.gameDataService.getGameData().subscribe((game_data: GameData) => {
 			this.game_data = game_data;
+			this.playerBids[this.game_data.pair_1[0]] = {
+				showPlayerBid: false,
+				playerLastBid: 16
+			};
+			this.playerBids[this.game_data.pair_2[0]] = {
+				showPlayerBid: false,
+				playerLastBid: 16
+			};
+			this.playerBids[this.game_data.pair_1[1]] = {
+				showPlayerBid: false,
+				playerLastBid: 16
+			};
+			this.playerBids[this.game_data.pair_2[1]] = {
+				showPlayerBid: false,
+				playerLastBid: 16
+			};
 		});
 
 		this.messageClient.gameEvents.subscribe(data => {
 			if (data.msgType == "player_card"){
+				let validCard = false;
 				if (data.data.forPlayer == this.my_player_id){
 					for (var card of data.data.cards){
 						console.log(card);
-						this.game_data.card_in_hand.push(new Card(card._suit, card._rank));
+						let handCard = new Card(card._suit, card._rank);
+						if (!this.game_data.card_in_hand.find(c => c.suit == handCard.suit && c.rank == handCard.rank)){
+							this.game_data.card_in_hand.push(handCard);
+							validCard = validCard || true;
+						}
 					}
+					if (validCard)
+						this.gameDataService.setGameData(this.game_data);
 				}
-				this.gameDataService.setGameData(this.game_data);
 			}
 			else if(data.msgType == "bidding_raise"){
 				if (data.data.forPlayer == this.my_player_id){
@@ -70,7 +75,7 @@ export class MainComponent implements OnInit {
 			else if(data.msgType == "bidding_update"){
 				if (data.data.bidder != this.my_player_id){
 					this.playerBids[data.data.bidder].showPlayerBid = true;
-					this.playerBids[data.data.bidder].playerLastBid = data.data.bid;
+					this.playerBids[data.data.bidder].playerLastBid = data.data.bid == 0 ? "Pass" : data.data.bid;
 				}
 			}
 		});
@@ -101,5 +106,7 @@ export class MainComponent implements OnInit {
 			return this.playerBids[playerName].playerLastBid;
 		return false;
 	}
+
+	nameToDisplay = (playerName, playerId) => { playerId == this.my_player_id ? "You" : playerName }
 
 }

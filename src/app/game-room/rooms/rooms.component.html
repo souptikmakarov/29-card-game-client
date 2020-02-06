@@ -1,9 +1,5 @@
-<nav class="navbar navbar-dark bg-dark">
-    <span class="navbar-text ml-auto">
-        {{ playerName }}
-    </span>
-</nav>
-<div *ngIf="!partOfRoom">
+<h3>Welcome {{ playerName }}</h3>
+<div *ngIf="!partOfRoom" class="mt-2">
     <div class="form-group-inline">
         <input type="text" class="form-control" [(ngModel)]="roomName">
         <br>
