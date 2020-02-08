@@ -109,17 +109,21 @@ export class MainComponent implements OnInit {
 	}
 
 	makeBid(){
-		this.playerBids[this.my_player_id].showPlayerBid = true;
-		this.playerBids[this.my_player_id].playerLastBid = this.bid_number;
-		this.messageClient.makeBid(this.bid_number, this.game_data.roomId);
-		this.amIBidding = false;
+		if (this.game_data && Object.keys(this.playerBids).length){
+			this.playerBids[this.my_player_id].showPlayerBid = true;
+			this.playerBids[this.my_player_id].playerLastBid = this.bid_number;
+			this.messageClient.makeBid(this.bid_number, this.game_data.roomId);
+			this.amIBidding = false;
+		}
 	}
 
 	passBid(){
-		this.playerBids[this.my_player_id].showPlayerBid = true;
-		this.playerBids[this.my_player_id].playerLastBid = "Pass";
-		this.messageClient.makeBid(0, this.game_data.roomId);
-		this.amIBidding = false;
+		if (this.game_data && Object.keys(this.playerBids).length){
+			this.playerBids[this.my_player_id].showPlayerBid = true;
+			this.playerBids[this.my_player_id].playerLastBid = "Pass";
+			this.messageClient.makeBid(0, this.game_data.roomId);
+			this.amIBidding = false;
+		}
 	}
 
 	canShowPlayerBid(playerName){
