@@ -13,8 +13,8 @@
             </table>
         </div>
         <div class="col-5 bid-info">
-            <span class="bidder">Bidder: ----</span><br>
-            <span class="bid-value">16</span>
+            <span class="bidder">{{ finalBidder }}</span><br>
+            <span class="bid-value">{{ finalBid }}</span>
         </div>
         <div class="col-2">
             <img src="../../../assets/card-images/card_back.jpg" class="trump-card mx-auto d-block">
@@ -25,7 +25,8 @@
     <div class="col-4">
         <div class="player-position postion-4">
             <img src="../../../assets/player-avatars/player4.jpg" class="player-avatar">
-            <span class="player-bid ml-1" *ngIf="canShowPlayerBid(game_data.pair_2[1])">{{ getPlayerLastBid(game_data.pair_2[1]) }}</span>
+            <span class="player-bid ml-1"
+                *ngIf="canShowPlayerBid(game_data.pair_2[1])">{{ getPlayerLastBid(game_data.pair_2[1]) }}</span>
             <p class="player-name">{{ nameToDisplay(game_data.pair_2_names[1], game_data.pair_2[1]) }}</p>
         </div>
     </div>
@@ -33,26 +34,68 @@
         <div class="player-position postion-3">
             <img src="../../../assets/player-avatars/player3.jpg" class="player-avatar">
             <p class="player-name">{{ nameToDisplay(game_data.pair_1_names[1], game_data.pair_1[1]) }}</p>
-            <span class="player-bid" *ngIf="canShowPlayerBid(game_data.pair_1[1])">{{ getPlayerLastBid(game_data.pair_1[1]) }}</span>
+            <span class="player-bid"
+                *ngIf="canShowPlayerBid(game_data.pair_1[1])">{{ getPlayerLastBid(game_data.pair_1[1]) }}</span>
         </div>
         <div class="player-position postion-1">
             <img src="../../../assets/player-avatars/player1.jpg" class="player-avatar">
             <p class="player-name">{{ nameToDisplay(game_data.pair_1_names[0], game_data.pair_1[0]) }}</p>
-            <span class="player-bid" *ngIf="canShowPlayerBid(game_data.pair_1[0])">{{ getPlayerLastBid(game_data.pair_1[0]) }}</span>
+            <span class="player-bid"
+                *ngIf="canShowPlayerBid(game_data.pair_1[0])">{{ getPlayerLastBid(game_data.pair_1[0]) }}</span>
         </div>
     </div>
     <div class="col-4">
         <div class="player-position postion-2">
-            <span class="player-bid mr-1" *ngIf="canShowPlayerBid(game_data.pair_2[0])">{{ getPlayerLastBid(game_data.pair_2[0]) }}</span>
+            <span class="player-bid mr-1"
+                *ngIf="canShowPlayerBid(game_data.pair_2[0])">{{ getPlayerLastBid(game_data.pair_2[0]) }}</span>
             <img src="../../../assets/player-avatars/player2.jpg" class="player-avatar">
             <p class="player-name">{{ nameToDisplay(game_data.pair_2_names[0], game_data.pair_2[0]) }}</p>
         </div>
     </div>
 </div>
 <div class="hand-display">
-    <img [src]="card.getImage()" [alt]="card.suit+card.rank" *ngFor="let card of game_data.card_in_hand" class="hand-card">
+    <img [src]="card.getImage()" [alt]="card.suit+card.rank" *ngFor="let card of game_data.card_in_hand"
+        class="hand-card">
 </div>
 <div class="bidding-section mt-2" *ngIf="amIBidding">
     <div class="bidding-buttons" (click)="makeBid()">{{ bid_number }}</div>
-    <div class="bidding-buttons ml-1 ml-md-3"(click)="passBid()">Pass</div>
+    <div class="bidding-buttons ml-1 ml-md-3" (click)="passBid()">Pass</div>
 </div>
+<div class="modal" tabindex="-1" role="dialog" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="text-align: center;">Select the Trump</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-3">
+                        <img [src]="trump_choices['hearts']" class="trump-choice" (click)="selectTrump('hearts')">
+                    </div>
+                    <div class="col-3">
+                        <img [src]="trump_choices['diamonds']" class="trump-choice" (click)="selectTrump('diamonds')">
+                    </div>
+                    <div class="col-3">
+                        <img [src]="trump_choices['clubs']" class="trump-choice" (click)="selectTrump('clubs')">
+                    </div>
+                    <div class="col-3">
+                        <img [src]="trump_choices['spades']" class="trump-choice" (click)="selectTrump('spades')">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-4">
+                        <img [src]="trump_choices['seventh']" class="trump-choice" (click)="selectTrump('seventh')">
+                    </div>
+                    <div class="col-4">
+                        <img [src]="trump_choices['joker']" class="trump-choice" (click)="selectTrump('joker')">
+                    </div>
+                    <div class="col-4">
+                        <img [src]="trump_choices['guarantee']" class="trump-choice" (click)="selectTrump('guarantee')">
+                    </div>
+                </div>
+            </div>
+            <button type="button" style="visibility: hidden;" data-dismiss="modal" #closeModal></button>
+        </div>
+    </div>
+</div>
+<button type="button" data-toggle="modal" data-target="#myModal" style="visibility: hidden;" #openModal></button>

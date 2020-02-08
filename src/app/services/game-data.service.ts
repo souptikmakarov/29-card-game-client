@@ -89,4 +89,9 @@ export class Card{
 		let fileName = `${this.rank}${this.suit}.jpg`;
 		return `../../../assets/card-images/${fileName}`;
 	}
+
+	static getSpecialImage(suit: string){
+		let fileName = `${suit}.jpg`;
+		return `../../../assets/card-images/${fileName}`;
+	}
 }

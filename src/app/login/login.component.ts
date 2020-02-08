@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 			},
 			(error) => { 
 				console.log(error);
-				alert("Register failed. Please try again");
+				alert("Login failed. Please try again");
 			}
 		);
 	}

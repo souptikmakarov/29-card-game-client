@@ -1,6 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { PlayerDataService, PlayerInfo } from './player-data.service';
+import { GameDataService, GameData } from './game-data.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -11,12 +12,19 @@ export class SocketClientService {
 
 	roomEvents = new EventEmitter<any>();
 
-	constructor(private socket: Socket, private playerService: PlayerDataService) {
+	constructor(private socket: Socket, private playerService: PlayerDataService, private gameDataService: GameDataService) {
 
 		this.socket.on('connect', () => {
 			playerService.getPlayerInfo().subscribe((data: PlayerInfo) =>{
-				if(data.playerId)
-					socket.emit("player_reconnect", data.playerId);
+				if (data.playerId)
+					gameDataService.getGameData().subscribe((gameData: GameData) => {
+						if(data.playerId && gameData.roomId)
+							socket.emit("player_reconnect", {
+								playerId: data.playerId,
+								roomId: gameData.roomId
+							});
+					});
+				
 			});
 		});
 
@@ -74,6 +82,13 @@ export class SocketClientService {
 				data: data
 			});
 		});
+
+		this.socket.fromEvent("bidding_complete").subscribe(data => {
+			this.gameEvents.emit({
+				msgType: "bidding_complete",
+				data: data
+			});
+		});
 	}
 
 	createRoom(roomName: string, playerId: string){
@@ -86,5 +101,9 @@ export class SocketClientService {
 
 	makeBid(bid: number, roomId: string){
 		this.socket.emit("player_bid", { bid, roomId });
+	}
+
+	setTrump(trump: string){
+		this.socket.emit("set_trump", { trump });
 	}
 }

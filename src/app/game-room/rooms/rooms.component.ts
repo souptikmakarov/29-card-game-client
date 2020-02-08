@@ -74,7 +74,8 @@ export class RoomsComponent implements OnInit, OnDestroy {
 	}
 
 	createRoom() {
-		this.messageClient.createRoom(this.roomName, this.playerId);
+		if (this.roomName)
+			this.messageClient.createRoom(this.roomName, this.playerId);
 	}
 
 	ngOnDestroy() {

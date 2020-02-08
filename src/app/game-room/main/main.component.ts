@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { SocketClientService } from 'src/app/services/socket-client.service';
 import { PlayerDataService } from 'src/app/services/player-data.service';
 import { GameDataService, GameData, Card } from 'src/app/services/game-data.service';
 import { Subscription } from 'rxjs';
+import { $ } from 'protractor';
 
 @Component({
 	selector: 'app-main',
@@ -10,13 +11,18 @@ import { Subscription } from 'rxjs';
 	styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit {
-
+	@ViewChild('openModal', { static: false }) openModal: ElementRef;
+	@ViewChild('closeModal', { static: false }) closeModal: ElementRef;
+	
 	bid_number: number;
 	game_data: GameData;
 	my_player_id: string;
 	subscription: Subscription;
 	amIBidding: boolean = false;
 	playerBids = {};
+	trump_choices = {};
+	finalBidder: string;
+	finalBid: string;
 
 	constructor(
 		private playerDataService: PlayerDataService,
@@ -25,6 +31,9 @@ export class MainComponent implements OnInit {
 
 	ngOnInit() {
 		this.bid_number = 16;
+
+		// setTimeout(() => {this.showTrumpModal();}, 2000);
+		
 
 		this.subscription = this.playerDataService.getPlayerInfo().subscribe(data => {
 			this.my_player_id = data.playerId;
@@ -78,7 +87,25 @@ export class MainComponent implements OnInit {
 					this.playerBids[data.data.bidder].playerLastBid = data.data.bid == 0 ? "Pass" : data.data.bid;
 				}
 			}
+			else if(data.msgType == "bidding_complete"){
+				this.finalBidder = data.data.bidding_player;
+				this.finalBid = data.data.finalBid;
+				if (data.data.bidding_player == this.my_player_id){
+					this.showTrumpModal();
+				}
+			}
 		});
+	}
+
+	showTrumpModal(){
+		this.trump_choices["hearts"] = Card.getSpecialImage("hearts");
+		this.trump_choices["diamonds"] = Card.getSpecialImage("diamonds");
+		this.trump_choices["clubs"] = Card.getSpecialImage("clubs");
+		this.trump_choices["spades"] = Card.getSpecialImage("spades");
+		this.trump_choices["seventh"] = Card.getSpecialImage("seventh");
+		this.trump_choices["joker"] = Card.getSpecialImage("joker");
+		this.trump_choices["guarantee"] = Card.getSpecialImage("guarantee");
+		this.openModal.nativeElement.click();
 	}
 
 	makeBid(){
@@ -108,5 +135,10 @@ export class MainComponent implements OnInit {
 	}
 
 	nameToDisplay = (playerName, playerId) => { playerId == this.my_player_id ? "You" : playerName }
+
+	selectTrump(selectedTrump){
+		this.messageClient.setTrump(selectedTrump);
+		this.closeModal.nativeElement.click();
+	}
 
 }

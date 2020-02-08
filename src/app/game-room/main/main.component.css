@@ -84,8 +84,6 @@
 .hand-display{
     width: 100%;
     max-height: 10vh;
-    position: relative;
-    top: 10vh;
     text-align: center;
 }
 
@@ -99,8 +97,8 @@
     width: 100%;
     font-size: 12pt;
     max-height: 20vh;
-    position: relative;
-    top: 10vh;
+    /* position: relative;
+    top: 10vh; */
     text-align: center;
 }
 
@@ -126,4 +124,11 @@
 .bidding-buttons:active{
     box-shadow: 1px 1px #666;
     transform: translateY(2px);
+}
+
+.trump-choice{
+    max-height: 10vh;
+    margin: auto;
+    border: 1px solid;
+    box-shadow: 1px 2px #888888;
 }

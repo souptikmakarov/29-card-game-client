@@ -10,8 +10,9 @@ import { RoomsComponent } from './game-room/rooms/rooms.component';
 import { MainComponent } from './game-room/main/main.component';
 import { LoginComponent } from './login/login.component';
 import { GameRoomComponent } from './game-room/game-room.component';
+import { environment } from "../environments/environment";
 
-const config: SocketIoConfig = { url: 'http://localhost:3000/', options: {} };
+const config: SocketIoConfig = { url: environment.apiUrl, options: {} };
 
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
