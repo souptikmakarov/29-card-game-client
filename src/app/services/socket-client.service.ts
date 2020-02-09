@@ -28,6 +28,13 @@ export class SocketClientService {
 			});
 		});
 
+		this.socket.fromEvent("room_invalid").subscribe(data => {
+			this.roomEvents.emit({
+				msgType: "room_invalid",
+				data: data
+			});
+		});
+
 		this.socket.fromEvent("players_in_room").subscribe(data => {
 			this.roomEvents.emit({
 				msgType: "players_in_room",

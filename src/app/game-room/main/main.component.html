@@ -4,11 +4,11 @@
             <table class="score-table">
                 <tr>
                     <td>Your Pair</td>
-                    <td>0</td>
+                    <td>{{ my_pair_score }}</td>
                 </tr>
                 <tr>
                     <td>Opp Pair</td>
-                    <td>0</td>
+                    <td>{{ opp_pair_score }}</td>
                 </tr>
             </table>
         </div>
@@ -25,31 +25,34 @@
     <div class="col-4">
         <div class="player-position postion-4">
             <img src="../../../assets/player-avatars/player4.jpg" class="player-avatar">
-            <span class="player-bid ml-1"
+            <!-- <span class="player-bid ml-1"
                 *ngIf="canShowPlayerBid(game_data.pair_2[1])">{{ getPlayerLastBid(game_data.pair_2[1]) }}</span>
-            <p class="player-name">{{ nameToDisplay(game_data.pair_2_names[1], game_data.pair_2[1]) }}</p>
+            <p class="player-name">{{ nameToDisplay(game_data.pair_2_names[1], game_data.pair_2[1]) }}</p> -->
+            <span class="player-bid ml-1"
+                *ngIf="playerPosInfo[21].canShowPlayerBid">{{ playerPosInfo[21].playerLastBid }}</span>
+            <p class="player-name">{{ playerPosInfo[21].name }}</p>
         </div>
     </div>
     <div class="col-4">
         <div class="player-position postion-3">
             <img src="../../../assets/player-avatars/player3.jpg" class="player-avatar">
-            <p class="player-name">{{ nameToDisplay(game_data.pair_1_names[1], game_data.pair_1[1]) }}</p>
+            <p class="player-name">{{ playerPosInfo[11].name }}</p>
             <span class="player-bid"
-                *ngIf="canShowPlayerBid(game_data.pair_1[1])">{{ getPlayerLastBid(game_data.pair_1[1]) }}</span>
+                *ngIf="playerPosInfo[11].canShowPlayerBid">{{ playerPosInfo[11].playerLastBid }}</span>
         </div>
         <div class="player-position postion-1">
             <img src="../../../assets/player-avatars/player1.jpg" class="player-avatar">
-            <p class="player-name">{{ nameToDisplay(game_data.pair_1_names[0], game_data.pair_1[0]) }}</p>
+            <p class="player-name">{{ playerPosInfo[10].name }}</p>
             <span class="player-bid"
-                *ngIf="canShowPlayerBid(game_data.pair_1[0])">{{ getPlayerLastBid(game_data.pair_1[0]) }}</span>
+                *ngIf="playerPosInfo[10].canShowPlayerBid">{{ playerPosInfo[10].playerLastBid }}</span>
         </div>
     </div>
     <div class="col-4">
         <div class="player-position postion-2">
             <span class="player-bid mr-1"
-                *ngIf="canShowPlayerBid(game_data.pair_2[0])">{{ getPlayerLastBid(game_data.pair_2[0]) }}</span>
+                *ngIf="playerPosInfo[20].canShowPlayerBid">{{ playerPosInfo[20].playerLastBid }}</span>
             <img src="../../../assets/player-avatars/player2.jpg" class="player-avatar">
-            <p class="player-name">{{ nameToDisplay(game_data.pair_2_names[0], game_data.pair_2[0]) }}</p>
+            <p class="player-name">{{ playerPosInfo[20].name }}</p>
         </div>
     </div>
 </div>
