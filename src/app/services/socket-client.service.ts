@@ -1,7 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { PlayerDataService, PlayerInfo } from './player-data.service';
-import { GameDataService, GameData } from './game-data.service';
+import { GameDataService, GameData, Card } from './game-data.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -96,6 +96,20 @@ export class SocketClientService {
 				data: data
 			});
 		});
+
+		this.socket.fromEvent("play_card").subscribe(forPlayer => {
+			this.gameEvents.emit({
+				msgType: "play_card",
+				forPlayer: forPlayer
+			});
+		});
+
+		this.socket.fromEvent("player_dealt_card").subscribe(data => {
+			this.gameEvents.emit({
+				msgType: "player_dealt_card",
+				data: data
+			});
+		});
 	}
 
 	createRoom(roomName: string, playerId: string){
@@ -110,7 +124,13 @@ export class SocketClientService {
 		this.socket.emit("player_bid", { bid, roomId });
 	}
 
-	setTrump(trump: string){
-		this.socket.emit("set_trump", { trump });
+	setTrump(trump: string, roomId: string){
+		this.socket.emit("set_trump", { trump, roomId });
+	}
+
+	dealCard(card: Card, playerId: string, roomId: string){
+		this.socket.emit("deal_card", { 
+			card, playerId, roomId
+		});
 	}
 }

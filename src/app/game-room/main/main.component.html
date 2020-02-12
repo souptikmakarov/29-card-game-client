@@ -17,7 +17,7 @@
             <span class="bid-value">{{ finalBid }}</span>
         </div>
         <div class="col-2">
-            <img src="../../../assets/card-images/card_back.jpg" class="trump-card mx-auto d-block">
+            <img [src]="trump_choices[trump_to_display]" class="trump-card mx-auto d-block">     <!-- src="../../../assets/card-images/card_back.jpg"  -->
         </div>
     </div>
 </div>
@@ -25,9 +25,6 @@
     <div class="col-4">
         <div class="player-position postion-4">
             <img src="../../../assets/player-avatars/player4.jpg" class="player-avatar">
-            <!-- <span class="player-bid ml-1"
-                *ngIf="canShowPlayerBid(game_data.pair_2[1])">{{ getPlayerLastBid(game_data.pair_2[1]) }}</span>
-            <p class="player-name">{{ nameToDisplay(game_data.pair_2_names[1], game_data.pair_2[1]) }}</p> -->
             <span class="player-bid ml-1"
                 *ngIf="playerPosInfo[21].canShowPlayerBid">{{ playerPosInfo[21].playerLastBid }}</span>
             <p class="player-name">{{ playerPosInfo[21].name }}</p>
@@ -57,8 +54,11 @@
     </div>
 </div>
 <div class="hand-display">
-    <img [src]="card.getImage()" [alt]="card.suit+card.rank" *ngFor="let card of game_data.card_in_hand"
-        class="hand-card">
+    <div class="row">
+        <div class="col-3" *ngFor="let card of game_data.card_in_hand; let i = index">
+            <img [src]="card.getImage()" [alt]="card.suit+card.rank" (click)="playCard(card, i)" class="hand-card">
+        </div>
+    </div>
 </div>
 <div class="bidding-section mt-2" *ngIf="amIBidding">
     <div class="bidding-buttons" (click)="makeBid()">{{ bid_number }}</div>

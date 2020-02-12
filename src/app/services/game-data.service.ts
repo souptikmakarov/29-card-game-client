@@ -74,19 +74,30 @@ export class GameData {
 	pair_1_names: string[] = ["",""];
 	pair_2_names: string[] = ["",""];
 	card_in_hand: Card[] = [];
+	set_seventh_trump: boolean = false;
 }
 
 export class Card{
 	suit: string;
 	rank: string;
+	isShown: boolean;
+	dealt: boolean;
 
-	constructor(suit, rank){
+	constructor(suit, rank, isShown=true){
 		this.suit = suit;
 		this.rank = rank;
+		this.isShown = isShown;
+		this.dealt = false;
 	}
 
 	getImage(){
-		let fileName = `${this.rank}${this.suit}.jpg`;
+		let fileName = "";
+		if (this.isShown)
+			fileName = `${this.rank}${this.suit}.jpg`;
+		else if (this.dealt)
+			fileName = "blank.jpg";
+		else
+			fileName = "card_back.jpg";
 		return `../../../assets/card-images/${fileName}`;
 	}
 

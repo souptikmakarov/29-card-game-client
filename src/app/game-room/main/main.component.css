@@ -92,6 +92,10 @@
     text-align: center;
 }
 
+.hand-display > .row > .col-3:nth-child(n+5){
+    margin-top: 2%;
+}
+
 .hand-card{
     display: inline-block;
     max-height: 10vh;

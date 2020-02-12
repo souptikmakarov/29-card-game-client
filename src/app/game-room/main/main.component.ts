@@ -26,6 +26,10 @@ export class MainComponent implements OnInit {
 	finalBid: string;
 	my_pair_score: number = 0;
 	opp_pair_score: number = 0;
+	trump_to_display: string = "card_back";
+	my_turn_to_play: boolean = false;
+	last_dealt_card: Card;
+	curr_hand: Card[] = [];
 
 
 	constructor(
@@ -36,7 +40,8 @@ export class MainComponent implements OnInit {
 
 	ngOnInit() {
 		this.bid_number = 15;
-		
+		this.trump_choices["card_back"] = Card.getSpecialImage("card_back");
+
 		this.subscription = this.playerDataService.getPlayerInfo().subscribe(data => {
 			this.my_player_id = data.playerId;
 		});
@@ -51,18 +56,37 @@ export class MainComponent implements OnInit {
 
 	handleGameEvents(data){
 		if (data.msgType == "player_card"){
-			let validCard = false;
 			if (data.data.forPlayer == this.my_player_id){
-				for (var card of data.data.cards){
-					console.log(card);
-					let handCard = new Card(card._suit, card._rank);
-					if (!this.game_data.card_in_hand.find(c => c.suit == handCard.suit && c.rank == handCard.rank)){
-						this.game_data.card_in_hand.push(handCard);
-						validCard = validCard || true;
+				let validCard = false;
+				if (this.game_data.card_in_hand.length == 0){
+					for (var card of data.data.cards){
+						console.log(card);
+						let handCard = new Card(card._suit, card._rank);
+						if (!this.game_data.card_in_hand.find(c => c.suit == handCard.suit && c.rank == handCard.rank)){
+							this.game_data.card_in_hand.push(handCard);
+							validCard = validCard || true;
+						}
 					}
+					if (validCard)
+						this.gameDataService.setGameData(this.game_data);
 				}
-				if (validCard)
-					this.gameDataService.setGameData(this.game_data);
+				else{
+					for (var card of data.data.cards){
+						console.log(card);
+						let handCard = null;
+						if (this.game_data.set_seventh_trump && this.game_data.card_in_hand.length == 6)
+							handCard = new Card(card._suit, card._rank, false);
+						else
+							handCard = new Card(card._suit, card._rank);
+
+						if (!this.game_data.card_in_hand.find(c => c.suit == handCard.suit && c.rank == handCard.rank)){
+							this.game_data.card_in_hand.push(handCard);
+							validCard = validCard || true;
+						}
+					}
+					if (validCard)
+						this.gameDataService.setGameData(this.game_data);
+				}
 			}
 		}
 		else if(data.msgType == "bidding_raise"){
@@ -85,12 +109,22 @@ export class MainComponent implements OnInit {
 				this.finalBidder = this.game_data.pair_2_names[this.game_data.pair_2.indexOf(data.data.bidding_player)];
 			}
 			this.finalBid = data.data.finalBid;
+			for (var key of Object.keys(this.playerBids)){
+				this.playerBids[key].showPlayerBid = false;
+			}
 			if (data.data.bidding_player == this.my_player_id){
 				this.showTrumpModal();
 			}
 		}
 		else if(data.msgType == "room_invalid"){
 			this.router.navigate(['/main']);
+		}
+		else if(data.msgType == "play_card"){
+			this.my_turn_to_play = (data.forPlayer == this.my_player_id);
+		}
+		else if(data.msgType == "player_dealt_card"){
+			// use data.data.playerId, suit and rank to show card played
+			console.log(data.data.playerId, data.data.suit, data.data.rank);
 		}
 	}
 
@@ -121,6 +155,28 @@ export class MainComponent implements OnInit {
 			this.messageClient.makeBid(0, this.game_data.roomId);
 			this.amIBidding = false;
 		}
+	}
+
+	selectTrump(selectedTrump){
+		this.game_data.set_seventh_trump = (selectedTrump == "seventh");
+		this.messageClient.setTrump(selectedTrump, this.game_data.roomId);
+		this.gameDataService.setGameData(this.game_data);
+		this.closeModal.nativeElement.click();
+	}
+
+	playCard(card: Card, index: number){
+		if (this.my_turn_to_play){
+			if (card.isShown){
+				this.messageClient.dealCard(card, this.my_player_id, this.game_data.roomId);
+				// this.game_data.card_in_hand.splice(index, 1);
+				card.dealt = true;
+				this.last_dealt_card = card;
+			}
+			else{
+				alert("Can't play 7th card until trump is revealed");
+			}
+		}
+			
 	}
 
 	// nameToDisplay(playerName, playerId) {
@@ -190,11 +246,6 @@ export class MainComponent implements OnInit {
 		if (this.playerBids.hasOwnProperty(playerName))
 			return this.playerBids[playerName].playerLastBid;
 		return false;
-	}
-
-	selectTrump(selectedTrump){
-		this.messageClient.setTrump(selectedTrump);
-		this.closeModal.nativeElement.click();
 	}
 
 }
