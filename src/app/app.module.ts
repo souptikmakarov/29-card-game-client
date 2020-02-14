@@ -11,6 +11,7 @@ import { MainComponent } from './game-room/main/main.component';
 import { LoginComponent } from './login/login.component';
 import { GameRoomComponent } from './game-room/game-room.component';
 import { environment } from "../environments/environment";
+import { LongPress } from './long-press';
 
 const config: SocketIoConfig = { url: environment.apiUrl, options: {} };
 
@@ -42,7 +43,8 @@ const appRoutes: Routes = [
     RoomsComponent,
     MainComponent,
     LoginComponent,
-    GameRoomComponent
+    GameRoomComponent,
+    LongPress
   ],
   imports: [
     BrowserModule,

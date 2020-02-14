@@ -1,3 +1,8 @@
+.my-container .row{
+    margin-left: 0;
+    margin-right: 0;
+}
+
 .game-info{
     width: 100%;
     border: 1px solid;
@@ -7,10 +12,10 @@
     max-height: 10vh;
 }
 
-.game-info > .row{
+/* .game-info > .row{
     max-width: 100%;
     margin: 0;
-}
+} */
 
 .bid-info{
     text-align: center;
@@ -46,17 +51,21 @@
     height: 60vh;
 }
 
+.game-table > .col-3,.col-6{
+    padding: 0;
+}
+
 .player-position{
     text-align: center;
     position: relative;
 }
 
 .postion-1{
-    top: 55%;
+    top: 25%;
 }
 
 .postion-2{
-    top: 45%;
+    top: 41%;
 }
 
 .postion-3{
@@ -64,12 +73,12 @@
 }
 
 .postion-4{
-    top: 45%;
+    top: 41%;
 }
 
 .player-avatar{
-    max-height: 8vh;
-    max-width: 8vh;
+    max-height: 6vh;
+    max-width: 6vh;
 }
 
 .player-bid{
@@ -86,17 +95,46 @@
     margin: 0;
 }
 
-.hand-display{
+.game-table > .col-4:nth-child(2n+1) .player-name{
+    max-width: 20vw;
+    margin: 0 auto;
+}
+
+.curr-hand-display{
+    position: relative;
+    top: 10%;
+}
+
+.curr-hand-display > .col-4{
+    padding: 0;
+    text-align: center;
+}
+
+.curr-hand-display > .col-4:nth-child(2) > .curr-hand-display-card:nth-child(2){
+    position: relative;
+    top: 30%;
+}
+
+.curr-hand-display-card{
+    max-height: 11vh;
+}
+
+.curr-hand-display > .col-4:nth-child(2n+1) > .curr-hand-display-card{
+    position: relative;
+    top: 40%;
+}
+
+.my-card-display{
     width: 100%;
     max-height: 10vh;
     text-align: center;
 }
 
-.hand-display > .row > .col-3:nth-child(n+5){
+.my-card-display > .row > .col-3:nth-child(n+5){
     margin-top: 2%;
 }
 
-.hand-card{
+.my-card{
     display: inline-block;
     max-height: 10vh;
     margin-left: 2vw;

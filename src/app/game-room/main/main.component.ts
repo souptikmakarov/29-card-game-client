@@ -29,7 +29,8 @@ export class MainComponent implements OnInit {
 	trump_to_display: string = "card_back";
 	my_turn_to_play: boolean = false;
 	last_dealt_card: Card;
-	curr_hand: Card[] = [];
+	curr_hand: Card[];
+	isLongPressing: boolean = false;
 
 
 	constructor(
@@ -39,8 +40,7 @@ export class MainComponent implements OnInit {
 		private router: Router) { }
 
 	ngOnInit() {
-		this.bid_number = 15;
-		this.trump_choices["card_back"] = Card.getSpecialImage("card_back");
+		this.setupUI();
 
 		this.subscription = this.playerDataService.getPlayerInfo().subscribe(data => {
 			this.my_player_id = data.playerId;
@@ -52,6 +52,43 @@ export class MainComponent implements OnInit {
 		});
 
 		this.messageClient.gameEvents.subscribe(data => this.handleGameEvents(data));
+
+		// this.setupMockDataForTest();
+	}
+
+	setupMockDataForTest() {
+		this.playerPosInfo[10] = {
+			name: "pod marani"
+		}
+		this.playerPosInfo[20] = {
+			name: "gud marani"
+		}
+		this.playerPosInfo[11] = {
+			name: "podur nati"
+		}
+		this.playerPosInfo[21] = {
+			name: "gudur nati"
+		}
+
+		this.game_data.card_in_hand = [
+			new Card("S", "J"),
+			new Card("S", "9"),
+			new Card("S", "A"),
+			new Card("S", "10"),
+			new Card("S", "K"),
+			new Card("S", "Q"),
+			new Card("S", "8"),
+			new Card("S", "7", false)
+		]
+	}
+
+	setupUI(){
+		this.bid_number = 15;
+		this.trump_choices["card_back"] = Card.getSpecialImage("card_back");
+		this.curr_hand = [	new Card("C", "2", false, true), 
+							new Card("S", "2", false, true), 
+							new Card("D", "2", false, true), 
+							new Card("H", "2", false, true), ];
 	}
 
 	handleGameEvents(data){
@@ -125,6 +162,19 @@ export class MainComponent implements OnInit {
 		else if(data.msgType == "player_dealt_card"){
 			// use data.data.playerId, suit and rank to show card played
 			console.log(data.data.playerId, data.data.suit, data.data.rank);
+			let dealtCard = new Card(data.data.suit, data.data.rank);
+			if (data.data.playerId == this.game_data.pair_1[0]){
+				this.curr_hand.splice(0, 1, dealtCard);
+			}
+			else if (data.data.playerId == this.game_data.pair_1[1]){
+				this.curr_hand.splice(2, 1, dealtCard);
+			}
+			else if (data.data.playerId == this.game_data.pair_2[0]){
+				this.curr_hand.splice(1, 1, dealtCard);
+			}
+			else if (data.data.playerId == this.game_data.pair_2[1]){
+				this.curr_hand.splice(3, 1, dealtCard);
+			}
 		}
 	}
 
@@ -164,12 +214,26 @@ export class MainComponent implements OnInit {
 		this.closeModal.nativeElement.click();
 	}
 
+	onLongPressing(card: Card){
+		if (!card.isShown){
+			card.isShown = true;
+			this.isLongPressing = true;
+		}
+	}
+
+	onLongPressEnd(card: Card){
+		if(this.isLongPressing){
+			card.isShown = false;
+			this.isLongPressing = false;
+		}
+	}
+
 	playCard(card: Card, index: number){
 		if (this.my_turn_to_play){
 			if (card.isShown){
 				this.messageClient.dealCard(card, this.my_player_id, this.game_data.roomId);
-				// this.game_data.card_in_hand.splice(index, 1);
-				card.dealt = true;
+				card.isDealt = true;
+				this.game_data.card_in_hand.splice(index, 1, card);
 				this.last_dealt_card = card;
 			}
 			else{

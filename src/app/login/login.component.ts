@@ -47,24 +47,27 @@ export class LoginComponent implements OnInit, OnDestroy {
 	}
 
 	registerUser() {
-		this.http.postData(`${this.apiUrl}/register`, {
-			name: this.username,
-			password: this.password
-		}).subscribe(
-			(data: any) => {
-				if (!data.err){
-					this.playerDataService.setPlayerInfo(new PlayerInfo(this.username, data.playerId));
-					this.router.navigate(['/main']);
-				}
-				else{
+		if (this.username.length <= 10)
+			this.http.postData(`${this.apiUrl}/register`, {
+				name: this.username,
+				password: this.password
+			}).subscribe(
+				(data: any) => {
+					if (!data.err){
+						this.playerDataService.setPlayerInfo(new PlayerInfo(this.username, data.playerId));
+						this.router.navigate(['/main']);
+					}
+					else{
+						alert("Register failed. Please try again");
+					}
+				},
+				(error) => { 
+					console.log(error); 
 					alert("Register failed. Please try again");
 				}
-			},
-			(error) => { 
-				console.log(error); 
-				alert("Register failed. Please try again");
-			}
-		);
+			);
+		else
+			alert("Please enter a name <= 10 characters");
 	}
 
 	ngOnDestroy(){

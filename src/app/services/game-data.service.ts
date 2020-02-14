@@ -81,20 +81,20 @@ export class Card{
 	suit: string;
 	rank: string;
 	isShown: boolean;
-	dealt: boolean;
+	isDealt: boolean;
 
-	constructor(suit, rank, isShown=true){
+	constructor(suit, rank, isShown=true, isDealt=false){
 		this.suit = suit;
 		this.rank = rank;
 		this.isShown = isShown;
-		this.dealt = false;
+		this.isDealt = isDealt;
 	}
 
 	getImage(){
 		let fileName = "";
 		if (this.isShown)
 			fileName = `${this.rank}${this.suit}.jpg`;
-		else if (this.dealt)
+		else if (this.isDealt)
 			fileName = "blank.jpg";
 		else
 			fileName = "card_back.jpg";
