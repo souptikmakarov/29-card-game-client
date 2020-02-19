@@ -12,12 +12,15 @@ import { LoginComponent } from './login/login.component';
 import { GameRoomComponent } from './game-room/game-room.component';
 import { environment } from "../environments/environment";
 import { LongPress } from './long-press';
+import { AdminComponent } from './admin/admin.component';
 
 const config: SocketIoConfig = { url: environment.apiUrl, options: {} };
 
 const appRoutes: Routes = [
+  // { path: '', component: MainComponent },
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'admin', component: AdminComponent },
   { path: 'main', 
     component: GameRoomComponent, 
     children: [
@@ -44,7 +47,8 @@ const appRoutes: Routes = [
     MainComponent,
     LoginComponent,
     GameRoomComponent,
-    LongPress
+    LongPress,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

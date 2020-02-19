@@ -110,6 +110,28 @@ export class SocketClientService {
 				data: data
 			});
 		});
+
+		this.socket.fromEvent("trump_revealed").subscribe(trump => {
+			this.gameEvents.emit({
+				msgType: "trump_revealed",
+				trump: trump
+			});
+		});
+
+		this.socket.fromEvent("hand_complete").subscribe(data => {
+			this.gameEvents.emit({
+				msgType: "hand_complete",
+				data: data
+			});
+		});
+
+		this.socket.fromEvent("game_complete").subscribe(data => {
+			this.gameEvents.emit({
+				msgType: "game_complete",
+				data: data
+			});
+		});
+		
 	}
 
 	createRoom(roomName: string, playerId: string){
@@ -132,5 +154,13 @@ export class SocketClientService {
 		this.socket.emit("deal_card", { 
 			card, playerId, roomId
 		});
+	}
+
+	showTrump(roomId: string) {
+		this.socket.emit("show_trump", roomId);
+	}
+
+	sendMessage(body, subject){
+		this.socket.emit(body, subject);
 	}
 }

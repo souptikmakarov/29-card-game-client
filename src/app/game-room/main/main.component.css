@@ -12,17 +12,18 @@
     max-height: 10vh;
 }
 
-/* .game-info > .row{
-    max-width: 100%;
-    margin: 0;
-} */
+.game-info .col-6,.col-4,.col-2{
+    padding-left: 0;
+    padding-right: 0;
+}
 
 .bid-info{
     text-align: center;
 }
 
 .score-table{
-    max-height: inherit;
+    max-height: 10vh;
+    font-size: 9pt;
 }
 
 .score-table > tr{
@@ -61,7 +62,11 @@
 }
 
 .postion-1{
-    top: 25%;
+    top: 20%;
+}
+
+.position-1-adj{
+    top: 10% !important;
 }
 
 .postion-2{
@@ -122,6 +127,10 @@
 .curr-hand-display > .col-4:nth-child(2n+1) > .curr-hand-display-card{
     position: relative;
     top: 40%;
+}
+
+.hand-winning-card{
+    border: 3px solid lawngreen;
 }
 
 .my-card-display{

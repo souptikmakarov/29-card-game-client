@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="col-6">
+        <ul *ngFor="let room of availableRooms">
+            <li (click)="getPlayersInRoom(room)">{{ room.roomName }}</li>
+        </ul>
+        
+        
+        <ul *ngFor="let player of playersInRoom">
+            <li>{{ player }}</li>
+        </ul>
+    </div>
+    <div class="col-6">
+        <input type="text" [(ngModel)]="messageSubject" class="form-control" placeholder="Enter subject">
+        <textarea [(ngModel)]="messageBody" cols="30" rows="10" class="form-control"></textarea>
+        <button class="btn btn-primary" (click)="sendMessage()">Send</button>
+    </div>
+</div>
+

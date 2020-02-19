@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: "https://purple-cat-22.localtunnel.me"
+  apiUrl: "http://192.168.1.4:3000"
 };
 
 /*

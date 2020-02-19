@@ -69,6 +69,8 @@ export class GameData {
 	roomId: string = "";
 	pair_1_score: number = 0;
 	pair_2_score: number = 0;
+	pair_1_points: number = 0;
+	pair_2_points: number = 0;
 	pair_1: string[] = ["",""];
 	pair_2: string[] = ["",""];
 	pair_1_names: string[] = ["",""];
@@ -92,7 +94,7 @@ export class Card{
 
 	getImage(){
 		let fileName = "";
-		if (this.isShown)
+		if (this.isShown && !this.isDealt)
 			fileName = `${this.rank}${this.suit}.jpg`;
 		else if (this.isDealt)
 			fileName = "blank.jpg";
