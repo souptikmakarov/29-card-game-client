@@ -108,6 +108,8 @@ export class MainComponent implements OnInit {
 							new Card("H", "2", false, false), ];
 
 		setTimeout(() => { this.curr_hand_winning_card = 21}, 2000);
+
+		this.myTurnToPlay = true;
 	}
 
 	setupUI(){
@@ -348,7 +350,7 @@ export class MainComponent implements OnInit {
 	}
 
 	isNewHandStarting(){
-		return this.curr_hand[0].rank == "2";
+		return this.curr_hand[0].rank == "2" && this.curr_hand[1].rank == "2" && this.curr_hand[2].rank == "2" && this.curr_hand[3].rank == "2";
 	}
 
 	isSuitInMyHand(suit: string){

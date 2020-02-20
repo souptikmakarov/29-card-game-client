@@ -100,6 +100,10 @@
     margin: 0;
 }
 
+.my_turn_to_play{
+    color: orangered;
+}
+
 .game-table > .col-4:nth-child(2n+1) .player-name{
     max-width: 20vw;
     margin: 0 auto;
