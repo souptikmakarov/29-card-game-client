@@ -451,21 +451,25 @@ export class MainComponent implements OnInit {
 			data["name"] = this.game_data.pair_1_names[0] ? this.game_data.pair_1_names[0] : "Loading...";
 			data["canShowPlayerBid"] = this.canShowPlayerBid(this.game_data.pair_1[0]);
 			data["playerLastBid"] = this.getPlayerLastBid(this.game_data.pair_1[0]);
+			data["myTurnToPlay"] = this.game_data.pair_1[0] == this.my_player_id ? this.myTurnToPlay : false;
 		}
         else if (playerPos == 20){
 			data["name"] = this.game_data.pair_2_names[0] ? this.game_data.pair_2_names[0] : "Loading...";
 			data["canShowPlayerBid"] = this.canShowPlayerBid(this.game_data.pair_2[0]);
 			data["playerLastBid"] = this.getPlayerLastBid(this.game_data.pair_2[0]);
+			data["myTurnToPlay"] = this.game_data.pair_2[0] == this.my_player_id ? this.myTurnToPlay : false;
 		}
         else if (playerPos == 11){
 			data["name"] = this.game_data.pair_1_names[1] ? this.game_data.pair_1_names[1] : "Loading...";
 			data["canShowPlayerBid"] = this.canShowPlayerBid(this.game_data.pair_1[1]);
 			data["playerLastBid"] = this.getPlayerLastBid(this.game_data.pair_1[1]);
+			data["myTurnToPlay"] = this.game_data.pair_1[1] == this.my_player_id ? this.myTurnToPlay : false;
 		}
         else if (playerPos == 21){
 			data["name"] = this.game_data.pair_2_names[1] ? this.game_data.pair_2_names[1] : "Loading...";
 			data["canShowPlayerBid"] = this.canShowPlayerBid(this.game_data.pair_2[1]);
 			data["playerLastBid"] = this.getPlayerLastBid(this.game_data.pair_2[1]);
+			data["myTurnToPlay"] = this.game_data.pair_2[1] == this.my_player_id ? this.myTurnToPlay : false;
 		}
 		return data;
 	}

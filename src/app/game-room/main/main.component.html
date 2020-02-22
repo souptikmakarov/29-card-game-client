@@ -35,13 +35,13 @@
                 <img src="../../../assets/player-avatars/player4.jpg" class="player-avatar">
                 <span class="player-bid ml-1"
                     *ngIf="playerPosInfo[21].canShowPlayerBid">{{ playerPosInfo[21].playerLastBid }}</span>
-                <p class="player-name" [ngClass]="{my_turn_to_play: myTurnToPlay}">{{ playerPosInfo[21].name }}</p>
+                <p class="player-name" [ngClass]="{my_turn_to_play: playerPosInfo[21].turnToPlay}">{{ playerPosInfo[21].name }}</p>
             </div>
         </div>
         <div class="col-6">
             <div class="player-position postion-3">
                 <img src="../../../assets/player-avatars/player3.jpg" class="player-avatar">
-                <p class="player-name" [ngClass]="{my_turn_to_play: myTurnToPlay}">{{ playerPosInfo[11].name }}</p>
+                <p class="player-name" [ngClass]="{my_turn_to_play: playerPosInfo[11].turnToPlay}">{{ playerPosInfo[11].name }}</p>
                 <span class="player-bid"
                     *ngIf="playerPosInfo[11].canShowPlayerBid">{{ playerPosInfo[11].playerLastBid }}</span>
             </div>
@@ -59,7 +59,7 @@
             </div>
             <div class="player-position postion-1" [ngClass]="{'position-1-adj': playerPosInfo[11].canShowPlayerBid}">
                 <img src="../../../assets/player-avatars/player1.jpg" class="player-avatar">
-                <p class="player-name" [ngClass]="{my_turn_to_play: myTurnToPlay}">{{ playerPosInfo[10].name }}</p>
+                <p class="player-name" [ngClass]="{my_turn_to_play: playerPosInfo[10].turnToPlay}">{{ playerPosInfo[10].name }}</p>
                 <span class="player-bid"
                     *ngIf="playerPosInfo[10].canShowPlayerBid">{{ playerPosInfo[10].playerLastBid }}</span>
             </div>
@@ -69,7 +69,7 @@
                 <span class="player-bid mr-1"
                     *ngIf="playerPosInfo[20].canShowPlayerBid">{{ playerPosInfo[20].playerLastBid }}</span>
                 <img src="../../../assets/player-avatars/player2.jpg" class="player-avatar">
-                <p class="player-name" [ngClass]="{my_turn_to_play: myTurnToPlay}">{{ playerPosInfo[20].name }}</p>
+                <p class="player-name" [ngClass]="{my_turn_to_play: playerPosInfo[20].turnToPlay}">{{ playerPosInfo[20].name }}</p>
             </div>
         </div>
     </div>
